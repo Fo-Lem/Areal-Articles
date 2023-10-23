@@ -1,50 +1,39 @@
 const { DataTypes } = require('sequelize')
 const sequelize = require('../db')
 
-const User = sequelize.define('user', {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  email: { type: DataTypes.STRING, unique: true, allowNull: false },
-  name: { type: DataTypes.STRING, allowNull: false },
-  surname: { type: DataTypes.STRING, defaultValue: '' },
-  password: { type: DataTypes.STRING, allowNull: false },
-  role: { type: DataTypes.STRING, defaultValue: 'USER' },
-  status: { type: DataTypes.BOOLEAN, defaultValue: false },
-})
-const Chat = sequelize.define('chat', {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  name: { type: DataTypes.STRING, allowNull: false },
-})
-const Member = sequelize.define('member', {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-})
+// Статьи:
+//        - ID
+//        - Название
+//        - Текст статьи
+//        - Дата создания
+//        - Дата модификации
 
-const Message = sequelize.define('message', {
+//        Комментарии:
+//        - ID
+//        - Текст комментария
+//        - ID Статьи
+//        - Дата создания
+//        - Дата модификации
+
+const Articles = sequelize.define('articles', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  type: { type: DataTypes.STRING, allowNull: false },
+  title: { type: DataTypes.STRING, allowNull: false },
   body: { type: DataTypes.STRING, allowNull: false },
+  createdAt: { type: DataTypes.DATE, allowNull: false },
+  updatedAt: { type: DataTypes.DATE, allowNull: false },
+})
+const Comments = sequelize.define('comments', {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  body: { type: DataTypes.STRING, allowNull: false },
+  articleId: { type: DataTypes.INTEGER, allowNull: false },
+  createdAt: { type: DataTypes.DATE, allowNull: false },
+  updatedAt: { type: DataTypes.DATE, allowNull: false },
 })
 
-User.hasMany(Message)
-Message.belongsTo(User)
-
-User.hasMany(Chat)
-Chat.belongsTo(User)
-
-User.hasMany(Member)
-Member.belongsTo(User)
-
-Chat.hasMany(Member)
-Member.belongsTo(Chat)
-
-Chat.hasMany(Message)
-Message.belongsTo(Chat)
-
-Chat.belongsToMany(User, { through: Member })
-User.belongsToMany(Chat, { through: Member })
+Articles.hasMany(Comments)
+Comments.belongsTo(Articles)
 
 module.exports = {
-  User,
-  Message,
-  Member,
-  Chat,
+  Articles,
+  Comments,
 }
