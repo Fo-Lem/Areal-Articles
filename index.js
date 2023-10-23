@@ -1,12 +1,9 @@
-// require("dotenv").config();
+import express from 'express'
+import cors from 'cors'
+import sequelize from './db'
 
-// const express = require("express");
-// const app = express();
-// const expressWs = require("express-ws")(app);
-// const sequelize = require("./db");
-// const PORT = process.env.PORT || 8081;
-// const models = require("./models/models");
-// const cors = require("cors");
+const app = express()
+const PORT = import.meta.env.PORT || 8081
 
 // const routerUser = require("./routes/User.routes");
 // const routerMessage = require("./routes/Message.routes");
@@ -14,8 +11,8 @@
 // const routerRooms = require("./routes/Rooms.routes");
 // const errorHandler = require("./middleware/ErrorHandlingMiddleware");
 
-// app.use(cors());
-// app.use(express.json());
+app.use(cors())
+app.use(express.json())
 
 // app.use("/api", routerWs);
 // app.use("/api", routerUser);
@@ -23,16 +20,18 @@
 // app.use("/api", routerRooms);
 
 // //Обработка ошибок
-// app.use(errorHandler);
-// //console.log(expressWs)
-// const start = async () => {
-//   try {
-//     await sequelize.authenticate();
-//     await sequelize.sync();
-//     app.listen(PORT, () => console.log(`server started on port ${PORT}`));
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
+// app.use(errorHandler)
+async function start() {
+  try {
+    await sequelize.authenticate()
+    await sequelize.sync()
+    app.listen(PORT, () => {
+      return console.log(`server started on port ${PORT}`)
+    })
+  }
+  catch (error) {
+    console.log(error)
+  }
+}
 
-// start();
+start()

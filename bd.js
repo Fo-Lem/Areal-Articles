@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize')
+import { Sequelize } from 'sequelize'
 
 module.exports = new Sequelize(
   import.meta.env.DB_NAME,
