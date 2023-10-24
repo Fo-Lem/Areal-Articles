@@ -16,7 +16,7 @@ class ArticlesController {
   }
 
   static async getArticles(req, res) {
-    if (req.body.id) {
+    if (req.params.id) {
       const result = await Articles.findOne({
         where: {
           id: req.params.id,
@@ -41,11 +41,7 @@ class ArticlesController {
 
   static async updateArticle(req, res) {
     const result = await Articles.update(
-      {
-        title: req.body.title,
-        body: req.body.body,
-        updatedAt: req.body.updatedAt,
-      },
+      req.body,
       {
         where: {
           id: req.params.id,
