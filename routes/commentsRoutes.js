@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import { commentsRouter } from 'express'
 
 import { CommentsController } from '../controllers/commentsController'
 
@@ -12,11 +12,11 @@ import { CommentsController } from '../controllers/commentsController'
 
 //        GET /analytic/comments/?dateFrom=#timestamp#&dateTo=#timestamp#
 
-Router.get('/article/:id/comment/:commentId/', CommentsController.getComments)
-Router.get('/article/:id/comments/', CommentsController.getComments)
-Router.get('/analytic/comments/?dateFrom&dateTo', CommentsController.getCommentsByPeriod)
-Router.post('/article/:id/comment/', CommentsController.createComment)
-Router.patch('/article/:id/comment/:commentId/', CommentsController.updateComment)
-Router.delete('/article/:id/comment/:commentId/', CommentsController.deleteComment)
+commentsRouter.get('article/:id/comment/:commentId/', CommentsController.getComments)
+commentsRouter.get('article/:id/comments/', CommentsController.getComments)
+commentsRouter.get('analytic/comments/?dateFrom&dateTo', CommentsController.getCommentsByPeriod)
+commentsRouter.post('article/:id/comment/', CommentsController.createComment)
+commentsRouter.patch('article/:id/comment/:commentId/', CommentsController.updateComment)
+commentsRouter.delete('article/:id/comment/:commentId/', CommentsController.deleteComment)
 
-module.exports = Router
+export { commentsRouter }
