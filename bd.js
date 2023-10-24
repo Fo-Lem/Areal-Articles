@@ -1,13 +1,18 @@
+import process from 'node:process'
 import { Sequelize } from 'sequelize'
+import dotenv from 'dotenv'
 
-module.exports = new Sequelize(
-  import.meta.env.DB_NAME,
-  import.meta.env.DB_USER,
-  import.meta.env.DB_PASSWORD,
+dotenv.config()
+
+const bd = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
   {
     dialect: 'postgres',
-    host: import.meta.env.DB_HOST,
-    post: import.meta.env.DB_PORT,
+    host: process.env.DB_HOST,
+    post: process.env.DB_PORT,
   },
 
 )
+export { bd }
