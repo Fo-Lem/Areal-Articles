@@ -13,6 +13,7 @@ export default {
       type: Object,
     },
   },
+  emits: ['updateArticle', 'createArticle', 'reset'],
 
   data() {
     return {
@@ -21,9 +22,9 @@ export default {
       validateSchema: toTypedSchema(
         zod.object({
           title: zod.string()
-            .min(1, { message: 'Поле пустое' }),
+            .min(1, { message: 'Поле ввода не должно быть пустым' }),
           body: zod.string()
-            .min(1, { message: 'Поле пустое' }),
+            .min(1, { message: 'Поле ввода не должно быть пустым' }),
         }),
       ),
 
@@ -36,14 +37,15 @@ export default {
     }
   },
   methods: {
-    create(values) {
-      console.log(values)
+    createArticle(values) {
+      if (this.article)
+        this.$emit('updateArticle', values)
+
+      else this.$emit('createArticle', values)
     },
-    reset() {
-      if (this.article) {
-        this.title = this.article.title
-        this.body = this.article.body
-      }
+    resetArticle() {
+      if (this.article)
+        this.$emit('reset')
     },
 
   },
@@ -51,7 +53,7 @@ export default {
 </script>
 
 <template>
-  <Form :validation-schema="validateSchema" @submit="create" @reset="reset">
+  <Form :validation-schema="validateSchema" @submit="createArticle" @reset="resetArticle">
     <div class="flex flex-col gap-y-5 p-5">
       <div class="">
         <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Заголовок</label>
@@ -72,10 +74,10 @@ export default {
 
       <div class="flex items-center justify-end gap-x-5">
         <button type="reset" class="text-sm font-semibold leading-6 text-gray-900">
-          Cancel
+          Отмена
         </button>
         <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-          Save
+          {{ article ? 'Изменить' : 'Создать' }}
         </button>
       </div>
     </div>
