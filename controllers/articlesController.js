@@ -1,8 +1,8 @@
-import { Model } from '../models/models'
+import { Articles } from '../models/models.js'
 
 class ArticlesController {
   static async createArticle(req, res) {
-    const result = await Model.Article.create({
+    const result = await Articles.create({
       title: req.body.title,
       body: req.body.body,
       createdAt: req.body.createdAt,
@@ -17,7 +17,7 @@ class ArticlesController {
 
   static async getArticles(req, res) {
     if (req.body.id) {
-      const result = await Model.Article.findOne({
+      const result = await Articles.findOne({
         where: {
           id: req.params.id,
         },
@@ -29,7 +29,7 @@ class ArticlesController {
       return res.json(result)
     }
     else {
-      const result = await Model.Article.findAndCountAll()
+      const result = await Articles.findAndCountAll()
         .then((result) => {
           return result
         }).catch((err) => {
@@ -40,7 +40,7 @@ class ArticlesController {
   }
 
   static async updateArticle(req, res) {
-    const result = await Model.Article.update(
+    const result = await Articles.update(
       {
         title: req.body.title,
         body: req.body.body,
@@ -60,7 +60,7 @@ class ArticlesController {
   }
 
   static async deleteArticle(req, res) {
-    const result = await Model.Article.destroy({
+    const result = await Articles.destroy({
       where: {
         id: req.params.id,
       },

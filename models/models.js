@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize'
-import sequelize from '../db'
+import { bd } from '../bd.js'
 
 // Статьи:
 //        - ID
@@ -15,16 +15,16 @@ import sequelize from '../db'
 //        - Дата создания
 //        - Дата модификации
 
-const Articles = sequelize.define('articles', {
+const Articles = bd.define('articles', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  title: { type: DataTypes.STRING, allowNull: false },
-  body: { type: DataTypes.STRING, allowNull: false },
+  title: { type: DataTypes.TEXT, allowNull: false },
+  body: { type: DataTypes.TEXT, allowNull: false },
   createdAt: { type: DataTypes.DATE, allowNull: false },
   updatedAt: { type: DataTypes.DATE, allowNull: false },
 })
-const Comments = sequelize.define('comments', {
+const Comments = bd.define('comments', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  body: { type: DataTypes.STRING, allowNull: false },
+  body: { type: DataTypes.TEXT, allowNull: false },
   articleId: { type: DataTypes.INTEGER, allowNull: false },
   createdAt: { type: DataTypes.DATE, allowNull: false },
   updatedAt: { type: DataTypes.DATE, allowNull: false },
@@ -33,7 +33,7 @@ const Comments = sequelize.define('comments', {
 Articles.hasMany(Comments)
 Comments.belongsTo(Articles)
 
-module.exports = {
+export {
   Articles,
   Comments,
 }

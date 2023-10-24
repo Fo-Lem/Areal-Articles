@@ -1,7 +1,7 @@
 import { Router } from 'express'
 
-import { CommentsController } from '../controllers/commentsController'
-
+import { CommentsController } from '../controllers/commentsController.js'
+const commentsRouter = Router()
 //     1. Реализовать CRUD для комментария (для body: content-type = application/json)
 //         - C - POST /article/#ID#/comment/
 //         - R - GET /article/#ID#/comment/#COMMENT_ID#/, GET /article/#ID#/comments/
@@ -12,11 +12,11 @@ import { CommentsController } from '../controllers/commentsController'
 
 //        GET /analytic/comments/?dateFrom=#timestamp#&dateTo=#timestamp#
 
-Router.get('/article/:id/comment/:commentId/', CommentsController.getComments)
-Router.get('/article/:id/comments/', CommentsController.getComments)
-Router.get('/analytic/comments/?dateFrom&dateTo', CommentsController.getCommentsByPeriod)
-Router.post('/article/:id/comment/', CommentsController.createComment)
-Router.patch('/article/:id/comment/:commentId/', CommentsController.updateComment)
-Router.delete('/article/:id/comment/:commentId/', CommentsController.deleteComment)
+commentsRouter.get('/article/:id/comment/:commentId/', CommentsController.getComments)
+commentsRouter.get('/article/:id/comments/', CommentsController.getComments)
+commentsRouter.get('/analytic/comments/?dateFrom&dateTo', CommentsController.getCommentsByPeriod)
+commentsRouter.post('/article/:id/comment/', CommentsController.createComment)
+commentsRouter.patch('/article/:id/comment/:commentId/', CommentsController.updateComment)
+commentsRouter.delete('/article/:id/comment/:commentId/', CommentsController.deleteComment)
 
-module.exports = Router
+export { commentsRouter }

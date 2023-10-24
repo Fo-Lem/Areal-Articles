@@ -1,9 +1,9 @@
 import { Op } from 'sequelize'
-import { Model } from '../models/models'
+import { Articles, Comments } from '../models/models.js'
 
 class CommentsController {
   static async createComment(req, res) {
-    const result = await Model.Comment.create({
+    const result = await Comments.create({
       articleId: req.params.articleId,
       body: req.body.body,
       createdAt: req.body.createdAt,
@@ -25,7 +25,7 @@ class CommentsController {
   static async getCommentsByPeriod(req, res) {
     const { dateFrom, dateTo } = req.query
 
-    const result = await Model.Comment.findAll({
+    const result = await Comments.findAll({
       where: {
         createdAt: {
           [Op.between]: [dateFrom, dateTo],
@@ -33,7 +33,7 @@ class CommentsController {
       },
       include: [
         {
-          model: Model.Article,
+          model: Articles,
           as: 'article',
           attributes: ['id', 'title'],
         },
@@ -50,7 +50,7 @@ class CommentsController {
 
   static async getComments(req, res) {
     if (req.params.commentId) {
-      const result = await Model.Comment.findOne({
+      const result = await Comments.findOne({
         where: {
           articleId: req.params.articleId,
           commentId: req.params.commentId,
@@ -63,7 +63,7 @@ class CommentsController {
       return res.json(result)
     }
     else {
-      const result = await Model.Comment.findAndCountAll({
+      const result = await Comments.findAndCountAll({
         where: {
           articleId: req.params.articleId,
         },
@@ -77,7 +77,7 @@ class CommentsController {
   }
 
   static async updateComment(req, res) {
-    const result = await Model.Comment.update(
+    const result = await Comments.update(
       {
         body: req.body.body,
         updatedAt: req.body.updatedAt,
@@ -97,7 +97,7 @@ class CommentsController {
   }
 
   static async deleteComment(res, req) {
-    const result = await Model.Comment.destroy({
+    const result = await Comments.destroy({
       where: {
         articleId: req.params.articleId,
         commentId: req.params.commentId,
