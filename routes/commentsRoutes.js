@@ -14,7 +14,7 @@ const commentsRouter = Router()
 
 commentsRouter.get('/article/:id/comment/:commentId/', CommentsController.getComments)
 commentsRouter.get('/article/:id/comments/', CommentsController.getComments)
-commentsRouter.get('/analytic/comments/?dateFrom&dateTo', CommentsController.getCommentsByPeriod)
+commentsRouter.get('/analytic/comments/', CommentsController.getCommentsByPeriod)
 commentsRouter.post('/article/:id/comment/', CommentsController.createComment)
 commentsRouter.patch('/article/:id/comment/:commentId/', CommentsController.updateComment)
 commentsRouter.delete('/article/:id/comment/:commentId/', CommentsController.deleteComment)
