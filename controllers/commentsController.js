@@ -4,7 +4,7 @@ import { Articles, Comments } from '../models/models.js'
 class CommentsController {
   static async createComment(req, res) {
     const result = await Comments.create({
-      articleId: req.params.articleId,
+      articleId: req.params.id,
       body: req.body.body,
       createdAt: req.body.createdAt,
       updatedAt: req.body.updatedAt,
@@ -25,20 +25,20 @@ class CommentsController {
   static async getCommentsByPeriod(req, res) {
     const { dateFrom, dateTo } = req.query
 
-    const result = await Comments.findAll({
-      where: {
-        createdAt: {
-          [Op.between]: [dateFrom, dateTo],
-        },
-      },
+    const result = await Articles.findAll({
+
       include: [
         {
-          model: Articles,
-          as: 'article',
-          attributes: ['id', 'title'],
+          model: Comments,
+          as: 'comments',
+          where: {
+            createdAt: {
+              [Op.between]: [dateFrom, dateTo],
+            },
+          },
+          attributes: ['id', 'articleId', 'body', 'createdAt', 'updatedAt'],
         },
       ],
-      group: ['article.id', 'article.title'],
     }).then((result) => {
       return result
     }).catch((err) => {
@@ -52,8 +52,8 @@ class CommentsController {
     if (req.params.commentId) {
       const result = await Comments.findOne({
         where: {
-          articleId: req.params.articleId,
-          commentId: req.params.commentId,
+          articleId: req.params.id,
+          id: req.params.commentId,
         },
       }).then((result) => {
         return result
@@ -65,7 +65,7 @@ class CommentsController {
     else {
       const result = await Comments.findAndCountAll({
         where: {
-          articleId: req.params.articleId,
+          articleId: req.params.id,
         },
       }).then((result) => {
         return result
@@ -84,8 +84,8 @@ class CommentsController {
       },
       {
         where: {
-          articleId: req.params.articleId,
-          commentId: req.params.commentId,
+          articleId: req.params.id,
+          id: req.params.commentId,
         },
       },
     ).then((result) => {
@@ -96,11 +96,12 @@ class CommentsController {
     return res.json(result)
   }
 
-  static async deleteComment(res, req) {
+  static async deleteComment(req, res) {
     const result = await Comments.destroy({
+
       where: {
-        articleId: req.params.articleId,
-        commentId: req.params.commentId,
+        articleId: req.params.id,
+        id: req.params.commentId,
       },
     }).then((result) => {
       return result
