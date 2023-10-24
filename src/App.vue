@@ -1,16 +1,24 @@
 <script>
-import FormArticle from './components/formArticle.vue'
+import Article from '@components/article.vue'
+import { getArticles } from '@controllers/articlesController.js'
 
 export default {
-  components: {
-    FormArticle,
+  components: { Article },
+  data() {
+    return {
+      Articles: [],
+    }
   },
+  async beforeMount() {
+    this.Articles = await getArticles()
+  },
+
 }
 </script>
 
 <template>
   <div>
-    <FormArticle />
+    <Article />
   </div>
 </template>
 
