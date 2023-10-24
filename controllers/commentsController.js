@@ -1,16 +1,6 @@
 import { Op } from 'sequelize'
 import { Model } from '../models/models'
 
-//     1. Реализовать CRUD для комментария (для body: content-type = application/json)
-//         - C - POST /article/#ID#/comment/
-//         - R - GET /article/#ID#/comment/#COMMENT_ID#/, GET /article/#ID#/comments/
-//         - U - PATCH /article/#ID#/comment/#COMMENT_ID#/
-//         - D - DELETE /article/#ID#/comment/#COMMENT_ID#/
-
-//     1. Реализовать метод получения комментариев за период с группировкой по статьям в которых они были оставлены
-
-//        GET /analytic/comments/?dateFrom=#timestamp#&dateTo=#timestamp#
-
 class CommentsController {
   static async createComment(req, res) {
     const result = await Model.Comment.create({
@@ -33,7 +23,7 @@ class CommentsController {
   }
 
   static async getCommentsByPeriod(req, res) {
-    const { dateFrom, dateTo } = req.params
+    const { dateFrom, dateTo } = req.query
 
     const result = await Model.Comment.findAll({
       where: {

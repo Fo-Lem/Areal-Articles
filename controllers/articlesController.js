@@ -1,11 +1,5 @@
 import { Model } from '../models/models'
 
-// 1. Реализовать CRUD для статьи (для body: content-type = application/json)
-//         - C - POST /article/
-//         - R - GET /article/#ID#/, GET /articles/
-//         - U - PATCH /article/#ID#/
-//         - D - DELETE /article/#ID#/
-
 class ArticlesController {
   static async createArticle(req, res) {
     const result = await Model.Article.create({
@@ -65,7 +59,7 @@ class ArticlesController {
     return res.json(result)
   }
 
-  static async deleteComment(req, res) {
+  static async deleteArticle(req, res) {
     const result = await Model.Article.destroy({
       where: {
         id: req.params.id,
