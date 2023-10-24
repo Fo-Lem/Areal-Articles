@@ -14,4 +14,4 @@ articlesRouter.post('article/', ArticlesController.createArticle)
 articlesRouter.patch('article/:id/', ArticlesController.updateArticle)
 articlesRouter.delete('article/:id/', ArticlesController.deleteArticle)
 
-export { articleRouters }
+export { articlesRouter }
