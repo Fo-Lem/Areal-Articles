@@ -1,24 +1,12 @@
 <script>
-import Article from '@components/article.vue'
-import { getArticles } from '@controllers/articlesController.js'
-
 export default {
-  components: { Article },
-  data() {
-    return {
-      Articles: [],
-    }
-  },
-  async beforeMount() {
-    this.Articles = await getArticles()
-  },
 
 }
 </script>
 
 <template>
-  <div>
-    <Article />
+  <div class="p-5 m-auto">
+    <router-view />
   </div>
 </template>
 
