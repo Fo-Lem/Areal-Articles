@@ -1,6 +1,5 @@
 <script>
 import FormComment from '@components/formComment.vue'
-import { patchComment } from '@controllers/commentsController'
 
 export default {
   name: 'Comment',
@@ -25,15 +24,16 @@ export default {
   },
 
   methods: {
+
     async updateComment(commentId, value) {
-      if (await patchComment(this.article.id, commentId, value.body)) {
-        this.isUpdate = false
-        this.$emit('updateComment')
-      }
+      this.$store.dispatch('updateComments', [this.article.id, commentId, value.body])
+      this.isUpdate = false
     },
-    deleteComment() {
-      this.$emit('deleteComment', this.comment.id)
+
+    async deleteComment() {
+      this.$store.dispatch('removeComment', [this.article.id, this.comment.id])
     },
+
   },
 
 }

@@ -11,6 +11,10 @@ export default {
   props: {
     comment: {
       type: Object,
+
+    },
+    article: {
+      type: Object,
     },
   },
   emits: ['reset', 'createComment', 'updateComment'],
@@ -36,7 +40,7 @@ export default {
       if (this.comment)
         this.$emit('updateComment', values)
 
-      else this.$emit('createComment', values)
+      else this.$store.dispatch('createComment', [this.article.id, values.body])
     },
 
     resetComment() {

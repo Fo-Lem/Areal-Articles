@@ -13,7 +13,7 @@ export default {
       type: Object,
     },
   },
-  emits: ['updateArticle', 'createArticle', 'reset'],
+  emits: ['updateArticle', 'reset'],
 
   data() {
     return {
@@ -41,7 +41,7 @@ export default {
       if (this.article)
         this.$emit('updateArticle', values)
 
-      else this.$emit('createArticle', values)
+      else this.$store.dispatch('createArticle', values)
     },
     resetArticle() {
       if (this.article)

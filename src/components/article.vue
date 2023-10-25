@@ -2,7 +2,6 @@
 import ListComments from '@components/listComments.vue'
 import FormArticle from '@components/formArticle.vue'
 import { router } from '../router/router.js'
-import { getArticle, patchArticle, removeArticle } from '../controllers/articlesController'
 
 export default {
   name: 'Comment',
@@ -12,24 +11,25 @@ export default {
   emits: ['updateArticle', 'deleteArticle'],
   data() {
     return {
-      article: {},
       isUpdate: false,
     }
   },
+  computed: {
+    article() {
+      return this.$store.getters.oneArticle
+    },
+  },
   async beforeMount() {
-    this.article = await getArticle(this.$route.params.articleId)
+    this.$store.dispatch('fetchArticle', this.$route.params.articleId)
   },
   methods: {
     async updateArticle(values) {
-      await patchArticle(this.article.id, values.title, values.body).then(() => {
-        this.isUpdate = false
-      })
-      if (!this.isUpdate)
-        this.article = await getArticle(this.$route.params.articleId)
+      this.$store.dispatch('updateArticle', [this.article.id, values.title, values.body])
+      this.isUpdate = false
     },
     async deleteArticle() {
-      if (await removeArticle(this.article.id))
-        router.go(-1)
+      this.$store.dispatch('removeArticle', this.article.id)
+      router.go(-1)
     },
 
   },
@@ -39,10 +39,6 @@ export default {
 
 <template>
   <div class="">
-    <router-link :to="{ name: 'listArticles' }">
-      Назад
-    </router-link>
-
     <div v-if="article.title && !isUpdate" class="flex flex-col justify-between rounded-md shadow-sm ring-1 p-2 ring-inset ring-gray-300 ">
       <div class="flex flex-row justify-between p-2 gap-2">
         <h2 class="text-lg">

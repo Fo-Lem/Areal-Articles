@@ -1,5 +1,4 @@
 <script>
-import { createArticle, getArticles, removeArticle } from '@controllers/articlesController.js'
 import FormArticle from '@components/formArticle.vue'
 
 export default {
@@ -7,30 +6,13 @@ export default {
   components: {
     FormArticle,
   },
-  data() {
-    return {
-      articles: [],
-    }
+  computed: {
+    articles() {
+      return this.$store.getters.allArticles
+    },
   },
   async beforeMount() {
-    await this.fetchArticle()
-  },
-
-  methods: {
-    async fetchArticle() {
-      this.articles = await getArticles()
-      this.articles.sort((a, b) => {
-        return new Date(a.createdAt) - new Date(b.createdAt)
-      })
-    },
-    async createArt(value) {
-      if (await createArticle(value.title, value.body))
-        await this.fetchArticle()
-    },
-    async remove(articleId) {
-      if (await removeArticle(articleId))
-        await this.fetchArticle()
-    },
+    this.$store.dispatch('fetchArticles')
   },
 
 }
@@ -47,7 +29,7 @@ export default {
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody v-if="articles.length > 0">
           <tr v-for="article in articles" :key="article.id" class="hover:bg-gray-100 cursor-pointer">
             <td>
               <router-link :to="{ name: 'article', params: { articleId: article.id } }">
@@ -58,7 +40,7 @@ export default {
         </tbody>
       </table>
     </div>
-    <FormArticle :key="articles[articles.length - 1]?.id" @createArticle="(body) => { createArt(body) }" />
+    <FormArticle :key="articles[articles.length - 1]?.id" @createArticle="(body) => { createArticle(body) }" />
   </div>
 </template>
 
