@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import ListArticles from '@components/ListArticles.vue'
-import Article from '@components/Article.vue'
+import ListArticles from '@components/listArticles.vue'
+import Article from '@components/article.vue'
+import CommentsByPeriod from '@components/commentsByPeriod.vue'
 
 const routes = [
   { path: '/', redirect: '/listArticles' },
@@ -13,18 +14,18 @@ const routes = [
     name: 'article',
     path: '/article_:articleId',
     component: Article,
-    // children: [
-    //   {
-    //     name: 'article', path: 'article_:articleId', component: Article,
-    //   },
-    // ],
+  },
+  {
+    name: 'commentsByPeriod',
+    path: '/commentsByPeriod',
+    component: CommentsByPeriod,
   },
 
 ]
 const router = createRouter(
   {
     routes,
-    history: createWebHistory(),
+    history: createWebHistory(import.meta.env.BASE_URL),
   },
 )
 export { router }
