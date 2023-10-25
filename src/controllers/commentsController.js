@@ -17,6 +17,18 @@ async function getComment(articleId, commentid) {
     return undefined
   })
 }
+async function getCommentsByPeriod(from, to) {
+  to = to.split('-')
+  to[2] = Number(to[2]) + 1
+  to = to.join('-')
+  return await $user.get('/analytic/comments/',
+    { params: { dateFrom: from, dateTo: to } }).then((res) => {
+    return res.data
+  }).catch((error) => {
+    console.error(error)
+    return undefined
+  })
+}
 
 async function patchComment(articleId, commentid, body) {
   return await $user.patch(`/article/${articleId}/comment/${commentid}/`, { body }).then((res) => {
@@ -48,4 +60,5 @@ export {
   patchComment,
   createComment,
   removeComment,
+  getCommentsByPeriod,
 }
