@@ -1,8 +1,8 @@
 <script>
 import ListComments from '@components/listComments.vue'
-
 import FormArticle from '@components/formArticle.vue'
-import { getArticle, patchArticle } from '../controllers/articlesController'
+import { router } from '../router/router.js'
+import { getArticle, patchArticle, removeArticle } from '../controllers/articlesController'
 
 export default {
   name: 'Comment',
@@ -12,12 +12,12 @@ export default {
   emits: ['updateArticle', 'deleteArticle'],
   data() {
     return {
-      isUpdate: false,
       article: {},
+      isUpdate: false,
     }
   },
   async beforeMount() {
-    this.article = await getArticle(1)
+    this.article = await getArticle(this.$route.params.articleId)
   },
   methods: {
     async updateArticle(values) {
@@ -25,10 +25,11 @@ export default {
         this.isUpdate = false
       })
       if (!this.isUpdate)
-        this.article = await getArticle(this.article.id)
+        this.article = await getArticle(this.$route.params.articleId)
     },
-    deleteArticle() {
-      this.$emit('deleteArticle', this.comment.id)
+    async deleteArticle() {
+      if (await removeArticle(this.article.id))
+        router.go(-1)
     },
 
   },
@@ -37,7 +38,11 @@ export default {
 </script>
 
 <template>
-  <div class="p-5">
+  <div class="">
+    <router-link :to="{ name: 'listArticles' }">
+      Назад
+    </router-link>
+
     <div v-if="article.title && !isUpdate" class="flex flex-col justify-between rounded-md shadow-sm ring-1 p-2 ring-inset ring-gray-300 ">
       <div class="flex flex-row justify-between p-2 gap-2">
         <h2 class="text-lg">

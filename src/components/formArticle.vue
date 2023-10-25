@@ -54,7 +54,7 @@ export default {
 
 <template>
   <Form :validation-schema="validateSchema" @submit="createArticle" @reset="resetArticle">
-    <div class="flex flex-col gap-y-5 p-5">
+    <div class="flex flex-col gap-y-5 ">
       <div class="">
         <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Заголовок</label>
 

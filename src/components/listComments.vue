@@ -1,5 +1,5 @@
 <script>
-import Comment from '@components/UI/comment.vue'
+import Comment from '@components/comment.vue'
 import { createComment, getComments, removeComment } from '@controllers/commentsController.js'
 import FormComment from '@components/formComment.vue'
 
@@ -44,7 +44,7 @@ export default {
 </script>
 
 <template>
-  <div class="flex flex-col gap-5 p-2  ">
+  <div v-if="comments" class="flex flex-col gap-5 p-2  ">
     <Comment
       v-for="comment in comments"
       :key="comment.id"
@@ -53,7 +53,7 @@ export default {
       @deleteComment="(commentId) => { remove(commentId) }"
       @updateComment="fetchComment()"
     />
-    <FormComment @createComment="(body) => { createComm(body) }" />
+    <FormComment :key="comments.length > 0 ? comments[comments.length - 1].id : 1" @createComment="(body) => { createComm(body) }" />
   </div>
 </template>
 
